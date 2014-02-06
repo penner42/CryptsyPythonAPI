@@ -34,9 +34,10 @@ class Cryptsy:
             ret = urllib2.urlopen(urllib2.Request('http://pubapi.cryptsy.com/api.php?method=' + method + '&marketid=' + str(req['marketid'])))
             return json.loads(ret.read())
         else:
-            req['method'] = method
-            req['nonce'] = int(time.time())
-            post_data = urllib.urlencode(req)
+            urlreq = dict(req)
+            urlreq['method'] = method
+            urlreq['nonce'] = int(time.time())
+            post_data = urllib.urlencode(urlreq)
 
             sign = hmac.new(self.Secret, post_data, hashlib.sha512).hexdigest()
             headers = {
